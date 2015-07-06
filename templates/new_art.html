@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+	<form method="post">
+		<label>
+			<div>Title</div>
+			<input type="text" placeholder="Add a title..." name="title" value={{title}}>
+		</label>
+		<label>
+			<div>Art</div>
+			<textarea name="art" placeholder="Add your /* ascii */">{{art}}</textarea>
+		</label>
+		<div class="error">{{error}}</div>
+		<br>
+		<input type="submit" value="Submit">
+	</form>
+
+{% endblock%}

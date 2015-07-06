@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>/ascii/</title>
+	</head>
+
+	<style type="text/css">
+		body {
+			font-family: sans-serif;
+			width: 90%;
+			margin: 5px auto;
+			padding:10px;
+			background-color:#B2D0FE;
+		}
+
+		.error {
+			color:red;
+		}
+
+		label {
+			display :block;
+			font-size: 1.5em;
+		}
+
+		input[type=text] {
+			width: 400px;
+			font-size: 20px;
+		}
+
+		textarea {
+			width: 400px;
+			height:200px;
+			font-size: 17px;
+			font-family:monospace;
+		}
+
+		input[type=submit] {
+			font-size: 24px;
+		}
+
+		img{
+			border-radius:10px;
+			padding:5px;
+			margin:auto;
+			width:40%;
+		}
+
+		hr {
+			margin: 30px auto;
+			clear:both;
+			color:blue;
+		}
+
+		.art + .art {
+			margin-top: 20px;
+		}
+
+
+		.art-title {
+			font-weight:bold;
+			font-size: 1.5em;
+		}
+		.art-body {
+			margin:0;
+			font-size: 12px;
+		}
+
+		#titleBar {
+			width:100%;
+			padding:2px;
+			font-size:1.5em;
+			text-align:center;
+		}
+
+		a:visited {
+			color:#000;
+		}
+		a:hover{
+			font-size:1.55em;
+		}
+
+
+	</style>
+
+	<body>
+		<div id="content">
+			<div id="titleBar">
+				<h1>/ascii/</h1>
+				<h4><a href="/new">New Ascii Art</a>
+			</div>
+				{% block content %}
+				{% endblock%}
+		</div>
+	</body>
+</html>
