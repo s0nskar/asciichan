@@ -4,6 +4,7 @@ import sys
 import urllib
 import urllib2
 import json
+import logging
 from string import letters
 
 import jinja2
@@ -53,6 +54,20 @@ def gmaps_img(points):
 						for p in points)
 	return GMAPS_URL + markers
 
+CACHE = {}
+def top_arts():
+	key = 'top'
+	if key in CACHE:
+		arts = CACHE[key]
+	else:
+		logging.error("DB QUERY")
+		arts = db.GqlQuery("SELECT * FROM Art "
+						"ORDER BY created DESC "
+						"LIMIT 10")
+		arts = list(arts)
+		CACHE[key] = arts
+	return arts
+
 class Art(db.Model):
 	title = db.StringProperty(required = True)
 	art = db.TextProperty(required = True)
@@ -61,11 +76,7 @@ class Art(db.Model):
 
 class MainPage(Handler):
 	def render_front(self,title="",art="",error=""):
-		arts = db.GqlQuery("SELECT * FROM Art "
-							"ORDER BY created DESC "
-							"LIMIT 10")
-		arts = list(arts)
-
+		arts = top_arts()
 		points = filter(None, (a.coords for a in arts))
 		img_url = None
 
