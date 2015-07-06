@@ -1,6 +1,7 @@
 import os
 import re
 import sys
+import urllib
 import urllib2
 import json
 from string import letters
@@ -13,6 +14,10 @@ from google.appengine.ext import db
 template_dir = os.path.join(os.path.dirname(__file__),"templates")
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
 								autoescape = True)
+
+SITE_KEY = '6LeIaAkTAAAAAGVrkDTsZEt4ZROeXCV1rqOWHOn5'
+SECRET_KEY = '6LeIaAkTAAAAAEzVbr46etytSr3gz_qkNosD-Nzv'
+SITE_VERIFY_URL = 'https://www.google.com/recaptcha/api/siteverify'
 
 
 class Handler(webapp2.RequestHandler):
@@ -80,16 +85,31 @@ class NewPost(Handler):
 	def post(self):
 		title = self.request.get("title")
 		art = self.request.get("art")
-		if title and art:
-			a = Art(title = title,art=art)
-			coords = get_coord(self.request.remote_addr)
-			if coords:
-				a.coords = coords
-			a.put()
-			self.redirect("/")
+		response = self.request.get("g-recaptcha-response")
+
+		req_data = {
+			'secret':SECRET_KEY,
+			'response':response
+		}
+		data = urllib.urlencode(req_data)
+		req = urllib2.Request(SITE_VERIFY_URL,data)
+		res = urllib2.urlopen(req)
+		result = json.loads(res.read())
+
+		if result['success']:
+			if title and art:
+				a = Art(title = title,art=art)
+				coords = get_coord(self.request.remote_addr)
+				if coords:
+					a.coords = coords
+				a.put()
+				self.redirect("/")
+			else:
+				error1 = "We need both a title and artwork!!"
+				self.render("new_art.html",title=title,art=art,error=error1)
 		else:
-			error = "We need both a title and artwork!!"
-			self.render("new_art.html",title=title,art=art,error=error)
+			error2 = "Enter a Valid reCAPTCHA !!"
+			self.render("new_art.html",error=error2)
 
 app = webapp2.WSGIApplication([('/', MainPage),
 								('/new',NewPost)],
