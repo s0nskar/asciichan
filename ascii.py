@@ -16,7 +16,7 @@ jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
 								autoescape = True)
 
 SITE_KEY = '6LeIaAkTAAAAAGVrkDTsZEt4ZROeXCV1rqOWHOn5'
-SECRET_KEY = '6LeIaAkTAAAAAEzVbr46etytSr3gz_qkNosD-Nzv'
+SECRET_KEY = #ADD YOUR SECRECT KEY
 SITE_VERIFY_URL = 'https://www.google.com/recaptcha/api/siteverify'
 
 
