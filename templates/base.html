@@ -39,17 +39,25 @@
 			font-size: 24px;
 		}
 
+		div{
+			text-align:center;
+		}
+
 		img{
-			border-radius:10px;
+			border-radius:15px;
 			padding:5px;
 			margin:auto;
-			width:40%;
 		}
 
 		hr {
 			margin: 30px auto;
 			clear:both;
 			color:blue;
+		}
+
+		.g-recaptcha {
+			width:25%;
+			margin:auto;
 		}
 
 		.art + .art {
@@ -78,12 +86,11 @@
 		}
 
 		a:hover{
-			font-size:1.55em;
+			font-size:1.4em;
 		}
 
 		#footer{
-			text-align:center;
-			color:white;
+			color:#EFF2F5;
 			font-size:20px;
 			text-decoration:underline;
 		}
@@ -96,7 +103,12 @@
 		<div id="content">
 			<div id="titleBar">
 				<h1>/* ascii */</h1>
-				<h4><a href="/new">New Ascii Art</a>
+				{% if not x %}
+					<h4><a href="/new">New Ascii Art</a>
+				{% else %}
+					<h4><a href="/">Home</a>
+				{% endif %}
+
 			</div>
 				{% block content %}
 				{% endblock%}

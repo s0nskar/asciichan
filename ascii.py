@@ -94,7 +94,7 @@ class MainPage(Handler):
 
 class NewPost(Handler):
 	def get(self):
-		self.render("new_art.html")
+		self.render("new_art.html",x=True)
 
 	def post(self):
 		title = self.request.get("title")
@@ -123,10 +123,10 @@ class NewPost(Handler):
 				self.redirect("/")
 			else:
 				error1 = "We need both a title and artwork!!"
-				self.render("new_art.html",title=title,art=art,error=error1)
+				self.render("new_art.html",title=title,art=art,error=error1,x=True)
 		else:
 			error2 = "Enter a Valid reCAPTCHA !!"
-			self.render("new_art.html",error=error2)
+			self.render("new_art.html",error=error2,x=True)
 
 app = webapp2.WSGIApplication([('/', MainPage),
 								('/new',NewPost)],
