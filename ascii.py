@@ -47,6 +47,8 @@ def get_coord(ip):
 		if not 'bogon' in json_o:
 			lat,lon = json_o['loc'].split(',')
 			return db.GeoPt(lat, lon)
+		if 'bogon' in json_o:
+			return db.GeoPt(51.5033630,-0.1276250)
 
 GMAPS_URL = 'http://maps.googleapis.com/maps/api/staticmap?size=1200x350&sensor=false&'
 def gmaps_img(points):
@@ -82,7 +84,8 @@ class MainPage(Handler):
 
 		if points:
 			img_url = gmaps_img(points)
-		self.render("ascii.html",title=title,art=art,error=error,arts = arts,img_url=img_url)
+
+		self.render("ascii.html",title=title,art=art,arts = arts,img_url=img_url)
 
 	def get(self):
 		#self.write(repr(get_coord(self.request.remote_addr)))
@@ -102,10 +105,13 @@ class NewPost(Handler):
 			'secret':SECRET_KEY,
 			'response':response
 		}
-		data = urllib.urlencode(req_data)
-		req = urllib2.Request(SITE_VERIFY_URL,data)
-		res = urllib2.urlopen(req)
-		result = json.loads(res.read())
+		try:
+			data = urllib.urlencode(req_data)
+			req = urllib2.Request(SITE_VERIFY_URL,data)
+			res = urllib2.urlopen(req)
+			result = json.loads(res.read())
+		except urllib2.URLError:
+			return None 
 
 		if result['success']:
 			if title and art:
